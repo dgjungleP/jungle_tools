@@ -2,6 +2,7 @@ package com.jungle.tools.url;
 
 
 import com.sun.istack.internal.NotNull;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.Map;
 
@@ -22,6 +23,9 @@ public class URLDefinition {
         url = buildPort(definition, url);
         url = buildPath(definition, url);
         url = buildQueryString(definition, url);
+        if (StringUtils.isNotBlank(url)) {
+            System.out.println(url);
+        }
         return definition;
     }
 
