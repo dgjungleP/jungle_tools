@@ -17,27 +17,34 @@ public class URLDefinition {
 
     protected static URLDefinition build(@NotNull String url) {
         URLDefinition definition = new URLDefinition();
-        buildType(definition, url);
-        buildHost(definition, url);
-        buildPort(definition, url);
-        buildPath(definition, url);
-        buildQueryString(definition, url);
+        url = buildType(definition, url);
+        url = buildHost(definition, url);
+        url = buildPort(definition, url);
+        url = buildPath(definition, url);
+        url = buildQueryString(definition, url);
         return definition;
     }
 
-    private static void buildType(URLDefinition definition, String url) {
+    private static String buildType(URLDefinition definition, String url) {
+        String[] split = url.split(URLUtils.PREFIX_SPLIT, 1);
+        System.out.println(split);
+        return url;
     }
 
-    private static void buildHost(URLDefinition definition, String url) {
+    private static String buildHost(URLDefinition definition, String url) {
+        return url;
     }
 
-    private static void buildPort(URLDefinition definition, String url) {
+    private static String buildPort(URLDefinition definition, String url) {
+        return url;
     }
 
-    private static void buildPath(URLDefinition definition, String url) {
+    private static String buildPath(URLDefinition definition, String url) {
+        return url;
     }
 
-    private static void buildQueryString(URLDefinition definition, String url) {
+    private static String buildQueryString(URLDefinition definition, String url) {
+        return url;
     }
 
 }
