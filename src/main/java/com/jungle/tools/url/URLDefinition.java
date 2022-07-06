@@ -1,6 +1,7 @@
 package com.jungle.tools.url;
 
 
+import com.jungle.tools.url.exception.URLTypeNotSupportException;
 import com.sun.istack.internal.NotNull;
 import org.apache.commons.lang.StringUtils;
 
@@ -30,12 +31,22 @@ public class URLDefinition {
     }
 
     private static String buildType(URLDefinition definition, String url) {
-        String[] split = url.split(URLUtils.PREFIX_SPLIT, 1);
-        System.out.println(split);
-        return url;
+        String[] split = url.split(URLUtils.PREFIX_SPLIT);
+        String inputKey = split[0];
+        URLType type = URLType.of(inputKey);
+        if (URLType.NOT_SUPPORT.equals(type)) {
+            throw new URLTypeNotSupportException("Bad url type with input key:" + inputKey + ".");
+        }
+        definition.type = type;
+        return split[1];
     }
 
     private static String buildHost(URLDefinition definition, String url) {
+        int hostEnd = url.indexOf(URLUtils.SPLIT);
+        int portIndex = url.indexOf(URLUtils.PORT_SPLIT);
+        int splitIndex = Math.min(hostEnd >= 0 ? hostEnd : Integer.MAX_VALUE, portIndex >= 0 ? portIndex : Integer.MAX_VALUE);
+        System.out.println("url.substring(0,splitIndex) = " + url.substring(0, splitIndex));
+        System.out.println("url.substring(splitIndex) = " + url.substring(splitIndex));
         return url;
     }
 
@@ -51,4 +62,14 @@ public class URLDefinition {
         return url;
     }
 
+    @Override
+    public String toString() {
+        return "URLDefinition{" +
+                "host='" + host + '\'' +
+                ", port=" + port +
+                ", path=" + path +
+                ", queryString=" + queryString +
+                ", type=" + type +
+                '}';
+    }
 }

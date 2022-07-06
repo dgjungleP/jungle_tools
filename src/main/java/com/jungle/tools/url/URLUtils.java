@@ -12,6 +12,7 @@ import java.util.Optional;
 public class URLUtils {
     public static final String SPLIT = "/";
     public static final String PREFIX_SPLIT = "://";
+    public static final String PORT_SPLIT = ":";
     private static List<URLType> supportTypeList = new ArrayList<>();
 
     static {
