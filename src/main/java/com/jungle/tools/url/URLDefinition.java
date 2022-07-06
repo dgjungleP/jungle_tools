@@ -1,12 +1,14 @@
 package com.jungle.tools.url;
 
 
+import com.jungle.tools.clazz.exception.ClazzNotSupportException;
 import com.jungle.tools.kv.KVPair;
 import com.jungle.tools.kv.KVUtils;
 import com.jungle.tools.url.exception.URLTypeNotSupportException;
 import com.sun.istack.internal.NotNull;
 import org.apache.commons.lang.StringUtils;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -85,8 +87,12 @@ public class URLDefinition {
         String[] split = url.split(URLUtils.QUERY_STRING_SPLIT);
         Map<String, Object> queryStringMap = new HashMap<>();
         for (String queryString : split) {
-            KVPair<String, Object> pair = KVUtils.queryKV(queryString, URLUtils.KEY_VALUE_SPLIT, String.class);
-            queryStringMap.putIfAbsent(pair.getKey(), pair.getValue());
+            try {
+                KVPair<String, Object> pair = KVUtils.queryKV(queryString, URLUtils.KEY_VALUE_SPLIT, String.class);
+                queryStringMap.putIfAbsent(pair.getKey(), pair.getValue());
+            } catch (IllegalAccessException | InvocationTargetException | InstantiationException | ClazzNotSupportException e) {
+                e.printStackTrace();
+            }
         }
         definition.setQueryString(queryStringMap);
         return "";
