@@ -68,11 +68,12 @@ public class URLDefinition {
 
     private static String buildPath(URLDefinition definition, String url) {
         int index = url.indexOf(URLUtils.PARAM_SPLIT);
+        String pathString = url;
         if (index >= 0) {
-            String pathString = url.substring(0, index);
-            Optional<URLPath> pathOptional = URLPath.build(pathString);
-            pathOptional.ifPresent(definition::setPath);
+            pathString = url.substring(0, index);
         }
+        Optional<URLPath> pathOptional = URLPath.build(pathString);
+        pathOptional.ifPresent(definition::setPath);
         return index < 0 ? "" : url.substring(index).trim();
     }
 
