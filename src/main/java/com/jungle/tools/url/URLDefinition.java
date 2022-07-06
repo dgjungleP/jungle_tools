@@ -87,12 +87,8 @@ public class URLDefinition {
         String[] split = url.split(URLUtils.QUERY_STRING_SPLIT);
         Map<String, Object> queryStringMap = new HashMap<>();
         for (String queryString : split) {
-            try {
-                KVPair<String, String> pair = KVUtils.queryKV(queryString, URLUtils.KEY_VALUE_SPLIT, String.class, String.class);
-                queryStringMap.putIfAbsent(pair.getKey(), pair.getValue());
-            } catch (IllegalAccessException | InvocationTargetException | InstantiationException | ClazzNotSupportException e) {
-                e.printStackTrace();
-            }
+            KVPair<String, String> pair = KVUtils.queryKV(queryString, URLUtils.KEY_VALUE_SPLIT);
+            queryStringMap.putIfAbsent(pair.getKey(), pair.getValue());
         }
         definition.setQueryString(queryStringMap);
         return "";
