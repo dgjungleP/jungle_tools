@@ -7,6 +7,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class JsonUtil {
@@ -54,4 +56,25 @@ public class JsonUtil {
             return invoke;
         }
     }
+
+    public static JSONObject copyJsonValue(JSONObject target, JSONObject source) {
+        Map<String, Object> targetInnerMap = target.getInnerMap();
+        Map<String, Object> sourceInnerMap = source.getInnerMap();
+        for (String simpleKey : targetInnerMap.keySet()) {
+            Object mergeResult;
+            Object targetSource = targetInnerMap.get(simpleKey);
+            Object sourceValue = sourceInnerMap.get(simpleKey);
+            if (Objects.isNull(sourceValue)) {
+                continue;
+            }
+            if (sourceValue instanceof JSONObject && targetSource instanceof JSONObject) {
+                mergeResult = copyJsonValue((JSONObject) targetSource, (JSONObject) sourceValue);
+            } else {
+                mergeResult = sourceValue;
+            }
+            targetInnerMap.put(simpleKey, mergeResult);
+        }
+        return target;
+    }
+
 }
