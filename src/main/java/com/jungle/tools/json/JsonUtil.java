@@ -2,6 +2,8 @@ package com.jungle.tools.json;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.JSONPath;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -12,6 +14,10 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class JsonUtil {
+    public static final String JSON_PATH_START = "$";
+    public static final String JSON_PATH_SPLIT = "$";
+    public static final String JSON_PATH_LIST = "[{INDEX}]";
+
     private JsonUtil() {
     }
 
@@ -55,6 +61,25 @@ public class JsonUtil {
             }
             return invoke;
         }
+    }
+
+
+    public static JSONObject ObjToJsonObject(Object o) {
+        String json = JSONObject.toJSONString(o);
+        return JSONObject.parseObject(json);
+    }
+
+    public static JSONObject ObjToJsonObjectWithNull(Object o) {
+        String json = JSONObject.toJSONString(o, SerializerFeature.WriteMapNullValue);
+        return JSONObject.parseObject(json);
+    }
+
+    public static String evalJsonPath(Object obj, String jsonPath) {
+        Object eval = JSONPath.eval(obj, jsonPath);
+        if (Objects.isNull(eval)) {
+            return "";
+        }
+        return eval.toString();
     }
 
     public static JSONObject copyJsonValue(JSONObject target, JSONObject source) {
