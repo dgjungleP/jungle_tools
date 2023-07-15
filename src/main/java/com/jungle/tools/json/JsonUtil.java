@@ -55,7 +55,8 @@ public class JsonUtil {
             Object invoke;
             try {
                 Class<?> parameterType = method.getParameterTypes()[0];
-                invoke = method.invoke(preObject, parameterType.getName().equals("int") ? Integer.parseInt(keyName) : keyName);
+                invoke = method.invoke(preObject, parameterType.getName()
+                        .equals("int") ? Integer.parseInt(keyName) : keyName);
             } catch (IllegalAccessException | InvocationTargetException e) {
                 return "You get a error json path";
             }
@@ -74,12 +75,12 @@ public class JsonUtil {
         return JSONObject.parseObject(json);
     }
 
-    public static String evalJsonPath(Object obj, String jsonPath) {
+    public static Object evalJsonPath(Object obj, String jsonPath) {
         Object eval = JSONPath.eval(obj, jsonPath);
         if (Objects.isNull(eval)) {
             return "";
         }
-        return eval.toString();
+        return eval;
     }
 
     public static JSONObject copyJsonValue(JSONObject target, JSONObject source) {
